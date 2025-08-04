@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Push_swap Operations Guide</title>
+    <style>
+        body {
+            font-family: 'Monaco', 'Consolas', monospace;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #4CAF50;
+        }
+        
+        .operation {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .operation h3 {
+            color: #4CAF50;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        
+        .stacks {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 20px 0;
+            font-family: monospace;
+        }
+        
+        .stack {
+            text-align: center;
+            min-width: 80px;
+        }
+        
+        .stack-label {
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+        
+        .stack-content {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #4CAF50;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+        
+        .element {
+            background: #4CAF50;
+            color: #000;
+            padding: 8px;
+            margin: 2px 0;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .arrow {
+            font-size: 2em;
+            color: #FFD700;
+            margin: 0 20px;
+            align-self: center;
+        }
+        
+        .example-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 25px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .practice-section {
+            background: rgba(255, 193, 7, 0.1);
+            border-left-color: #FFC107;
+        }
+        
+        .test-area {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .input-group {
+            margin: 15px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #FFD700;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #000;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        
+        .correct {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .incorrect {
+            background: rgba(244, 67, 54, 0.2);
+            border: 2px solid #f44336;
+            color: #f44336;
+        }
+        
+        .description {
+            background: rgba(33, 150, 243, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+            margin: 15px 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 Push_swap Operations Guide</h1>
+        
+        <div class="section">
+            <h2>📚 Operation Explanations</h2>
+            
+            <div class="operation">
+                <h3>sa (swap a) - Swap first 2 elements of stack a</h3>
+                <div class="description">
+                    Exchanges the positions of the top two elements in stack a. If there's only one element or none, nothing happens.
+                </div>
+                <div class="example-container">
+                    <div class="stacks">
+                        <div class="stack">
+                            <div class="stack-label">Stack A (Before)</div>
+                            <div class="stack-content">
+                                <div class="element">1</div>
+                                <div class="element">2</div>
+                                <div class="element">3</div>
+                            </div>
+                        </div>
+                        <div class="stack">
+                            <div class="stack-label">Stack B</div>
+                            <div class="stack-content">
+                                <div style="color: #666;">empty</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="stacks">
+                        <div class="stack">
+                            <div class="stack-label">Stack A (After sa)</div>
+                            <div class="stack-content">
+                                <div class="element">2</div>
+                                <div class="element">1</div>
+                                <div class="element">3</div>
+                            </div>
+                        </div>
+                        <div class="stack">
+                            <div class="stack-label">Stack B</div>
+                            <div class="stack-content">
+                                <div style="color: #666;">empty</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="operation">
+                <h3>pb (push b) - Move top element from a to b</h3>
+                <div class="description">
+                    Takes the top element from stack a and places it on top of stack b. If stack a is empty, nothing happens.
+                </div>
+                <div class="example-container">
+                    <div class="stacks">
+                        <div class="stack">
+                            <div class="stack-label">Stack A (Before)</div>
+                            <div class="stack-content">
+                                <div class="element">5</div>
+                                <div class="element">2</div>
+                                <div class="element">8</div>
+                            </div>
+                        </div>
+                        <div class="stack">
+                            <div class="stack-label">Stack B (Before)</div>
+                            <div class="stack-content">
+                                <div class="element">1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="stacks">
+                        <div class="stack">
+                            <div class="stack-label">Stack A (After pb)</div>
+                            <div class="stack-content">
+                                <div class="element">2</div>
+                                <div class="element">8</div>
+                            </div>
+                        </div>
+                        <div class="stack">
+                            <div class="stack-label">Stack B (After pb)</div>
+                            <div class="stack-content">
+                                <div class="element">5</div>
+                                <div class="element">1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="operation">
+                <h3>ra (rotate a) - Shift all elements up by 1</h3>
+                <div class="description">
+                    The first (top) element becomes the last (bottom). All other elements move up one position.
+                </div>
+                <div class="example-container">
+                    <div class="stacks">
+                        <div class="stack">
+                            <div class="stack-label">Stack A (Before)</div>
+                            <div class="stack-content">
+                                <div class="element">1</div>
+                                <div class="element">2</div>
+                                <div class="element">3</div>
+                                <div class="element">4</div>
+                            </div>
+                        </div>
+                        <div class="stack">
+                            <div class="stack-label">Stack B</div>
+                            <div class="stack-content">
+                                <div style="color: #666;">empty</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="stacks">
+                        <div class="stack">
+                            <div class="stack-label">Stack A (After ra)</div>
+                            <div class="stack-content">
+                                <div class="element">2</div>
+                                <div class="element">3</div>
+                                <div class="element">4</div>
+                                <div class="element">1</div>
+                            </div>
+                        </div>
+                        <div class="stack">
+                            <div class="stack-label">Stack B</div>
+                            <div class="stack-content">
+                                <div style="color: #666;">empty</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="operation">
+                <h3>rra (reverse rotate a) - Shift all elements down by 1</h3>
+                <div class="description">
+                    The last (bottom) element becomes the first (top). All other elements move down one position.
+                </div>
+                <div class="example-container">
+                    <div class="stacks">
+                        <div class="stack">
+                            <div class="stack-label">Stack A (Before)</div>
+                            <div class="stack-content">
+                                <div class="element">1</div>
+                                <div class="element">2</div>
+                                <div class="element">3</div>
+                                <div class="element">4</div>
+                            </div>
+                        </div>
+                        <div class="stack">
+                            <div class="stack-label">Stack B</div>
+                            <div class="stack-content">
+                                <div style="color: #666;">empty</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="stacks">
+                        <div class="stack">
+                            <div class="stack-label">Stack A (After rra)</div>
+                            <div class="stack-content">
+                                <div class="element">4</div>
+                                <div class="element">1</div>
+                                <div class="element">2</div>
+                                <div class="element">3</div>
+                            </div>
+                        </div>
+                        <div class="stack">
+                            <div class="stack-label">Stack B</div>
+                            <div class="stack-content">
+                                <div style="color: #666;">empty</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section practice-section">
+            <h2>🔥 Advanced Challenge Mode!</h2>
+            <p>Now we're getting serious! These questions involve <strong>multiple combined operations</strong>. Apply each operation in sequence and track the changes carefully.</p>
+            
+            <div class="test-area">
+                <div id="currentTest">
+                    <div class="input-group">
+                        <label>Current Stack Configuration:</label>
+                        <div id="initialStacks" class="stacks">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Operations to perform: <span id="currentOperation" style="color: #4CAF50; font-size: 1.2em;"></span></label>
+                        <div style="background: rgba(255,193,7,0.1); padding: 10px; border-radius: 5px; margin-top: 5px;">
+                            💡 <strong>Tip:</strong> For multiple operations, apply them one by one in the given order!
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Your answer - Stack A after operation (enter numbers separated by spaces, top to bottom):</label>
+                        <input type="text" id="answerA" placeholder="e.g., 2 1 3 4">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>Your answer - Stack B after operation (enter numbers separated by spaces, top to bottom):</label>
+                        <input type="text" id="answerB" placeholder="e.g., 5 6 or leave empty">
+                    </div>
+                    
+                
+                    <button onclick="nextQuestion()">Next Question</button>
+                    <button onclick="showStepByStep()">Show Step-by-Step / Answer</button>
+                </div>
+                
+                <div id="result" class="result" style="display: none;"></div>
+            </div>
+
+            <div class="input-group">
+                <label>Quick Reference - All Operations:</label>
+                <div style="background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; font-family: monospace;">
+                    <strong>sa/sb:</strong> swap first 2 elements<br>
+                    <strong>pa/pb:</strong> push from other stack to this stack<br>
+                    <strong>ra/rb:</strong> rotate (first becomes last)<br>
+                    <strong>rra/rrb:</strong> reverse rotate (last becomes first)<br>
+                    <strong>ss/rr/rrr:</strong> do both stacks simultaneously
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTestCase = 0;
+        let testCases = [
+            // Easy warm-up questions
+            {
+                stackA: [3, 1, 4],
+                stackB: [],
+                operation: "sa",
+                correctA: [1, 3, 4],
+                correctB: []
+            },
+            // Combined operations - Medium difficulty
+            {
+                stackA: [5, 8, 2, 9],
+                stackB: [3, 1],
+                operations: ["pb", "sa", "rb"],
+                correctA: [8, 2, 9],
+                correctB: [1, 5, 3]
+            },
+            {
+                stackA: [7, 4, 1],
+                stackB: [9, 6, 2],
+                operations: ["ra", "pb", "rrb"],
+                correctA: [4, 1, 9, 7],
+                correctB: [2, 6]
+            },
+            {
+                stackA: [2, 5, 8, 3],
+                stackB: [1, 7],
+                operations: ["ss", "pa"],
+                correctA: [1, 5, 8, 3],
+                correctB: [7, 2]
+            },
+            // Hard combined operations
+            {
+                stackA: [9, 3, 6, 1, 4],
+                stackB: [8, 2, 7],
+                operations: ["pb", "rr", "pb", "sa", "rrr"],
+                correctA: [6, 9, 1, 4],
+                correctB: [7, 2, 8, 3]
+            },
+            {
+                stackA: [1, 5, 2, 8],
+                stackB: [9, 4, 6, 3],
+                operations: ["ra", "pb", "ss", "rb", "pa"],
+                correctA: [9, 2, 8, 1],
+                correctB: [6, 3, 4, 5]
+            },
+            // Very hard - multiple combined operations
+            {
+                stackA: [7, 1, 9, 3, 5],
+                stackB: [2, 8, 4, 6],
+                operations: ["pb", "ra", "sb", "pb", "rra", "pa", "ss"],
+                correctA: [8, 9, 3, 5, 7],
+                correctB: [4, 2, 1, 6]
+            },
+            {
+                stackA: [4, 6, 1, 8, 2, 9],
+                stackB: [7, 3, 5],
+                operations: ["pb", "pb", "rr", "sa", "rrb", "pa", "ra"],
+                correctA: [3, 8, 2, 9, 4],
+                correctB: [5, 7, 1]
+            },
+            // Expert level - long sequences
+            {
+                stackA: [3, 7, 1, 5, 9, 2],
+                stackB: [8, 4, 6],
+                operations: ["pb", "sa", "rb", "pb", "rra", "ss", "pa", "rrb"],
+                correctA: [1, 2, 7, 5, 9],
+                correctB: [6, 8, 7, 3]
+            },
+            // Master level - complex scenario
+            {
+                stackA: [5, 2, 8, 1, 6, 9, 3],
+                stackB: [7, 4],
+                operations: ["pb", "pb", "ra", "sb", "pb", "rr", "pa", "sa", "rrr", "pb"],
+                correctA: [1, 8, 6, 9, 3],
+                correctB: [5, 4, 7, 1, 2]
+            }
+        ];
+
+        function displayCurrentTest() {
+            const test = testCases[currentTestCase];
+            const stacksDiv = document.getElementById('initialStacks');
+            
+            stacksDiv.innerHTML = `
+                <div class="stack">
+                    <div class="stack-label">Stack A (Initial)</div>
+                    <div class="stack-content">
+                        ${test.stackA.length ? test.stackA.map(n => `<div class="element">${n}</div>`).join('') : '<div style="color: #666;">empty</div>'}
+                    </div>
+                </div>
+                <div class="stack">
+                    <div class="stack-label">Stack B (Initial)</div>
+                    <div class="stack-content">
+                        ${test.stackB.length ? test.stackB.map(n => `<div class="element">${n}</div>`).join('') : '<div style="color: #666;">empty</div>'}
+                    </div>
+                </div>
+            `;
+            
+            // Handle both single operation and multiple operations
+            if (test.operation) {
+                document.getElementById('currentOperation').textContent = test.operation;
+            } else if (test.operations) {
+                document.getElementById('currentOperation').textContent = test.operations.join(' → ');
+            }
+            
+            document.getElementById('answerA').value = '';
+            document.getElementById('answerB').value = '';
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function parseAnswer(answer) {
+            if (!answer.trim()) return [];
+            return answer.trim().split(/\s+/).map(n => parseInt(n)).filter(n => !isNaN(n));
+        }
+
+        function arraysEqual(a, b) {
+            return a.length === b.length && a.every((val, index) => val === b[index]);
+        }
+
+        function checkAnswer() {
+            const test = testCases[currentTestCase];
+            const userA = parseAnswer(document.getElementById('answerA').value);
+            const userB = parseAnswer(document.getElementById('answerB').value);
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            
+            if (arraysEqual(userA, test.correctA) && arraysEqual(userB, test.correctB)) {
+                resultDiv.className = 'result correct';
+                resultDiv.innerHTML = '🎉 Correct! Well done!';
+            } else {
+                resultDiv.className = 'result incorrect';
+                resultDiv.innerHTML = `❌ Not quite right. The correct answer is:<br>
+                    Stack A: [${test.correctA.join(', ')}]<br>
+                    Stack B: [${test.correctB.join(', ')}]`;
+            }
+        }
+
+        function showStepByStep() {
+            const test = testCases[currentTestCase];
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.className = 'result';
+            resultDiv.style.background = 'rgba(33, 150, 243, 0.2)';
+            resultDiv.style.borderColor = '#2196F3';
+            resultDiv.style.color = '#2196F3';
+            
+            if (test.operation) {
+                // Single operation
+                resultDiv.innerHTML = `💡 Answer:<br>
+                    Final Stack A: [${test.correctA.join(', ')}]<br>
+                    Final Stack B: [${test.correctB.join(', ')}]`;
+            } else if (test.operations) {
+                // Multiple operations - show step by step
+                let currentA = [...test.stackA];
+                let currentB = [...test.stackB];
+                let steps = [`<strong>Step-by-step solution:</strong><br><br>`];
+                steps.push(`Initial: A=[${currentA.join(', ')}], B=[${currentB.join(', ')}]<br>`);
+                
+                test.operations.forEach((op, index) => {
+                    // Apply operation
+                    [currentA, currentB] = applyOperation(currentA, currentB, op);
+                    steps.push(`After ${op}: A=[${currentA.join(', ')}], B=[${currentB.join(', ')}]<br>`);
+                });
+                
+                resultDiv.innerHTML = steps.join('');
+            }
+        }
+
+        function applyOperation(stackA, stackB, operation) {
+            let a = [...stackA];
+            let b = [...stackB];
+            
+            switch(operation) {
+                case 'sa':
+                    if (a.length >= 2) [a[0], a[1]] = [a[1], a[0]];
+                    break;
+                case 'sb':
+                    if (b.length >= 2) [b[0], b[1]] = [b[1], b[0]];
+                    break;
+                case 'ss':
+                    if (a.length >= 2) [a[0], a[1]] = [a[1], a[0]];
+                    if (b.length >= 2) [b[0], b[1]] = [b[1], b[0]];
+                    break;
+                case 'pa':
+                    if (b.length > 0) a.unshift(b.shift());
+                    break;
+                case 'pb':
+                    if (a.length > 0) b.unshift(a.shift());
+                    break;
+                case 'ra':
+                    if (a.length > 1) a.push(a.shift());
+                    break;
+                case 'rb':
+                    if (b.length > 1) b.push(b.shift());
+                    break;
+                case 'rr':
+                    if (a.length > 1) a.push(a.shift());
+                    if (b.length > 1) b.push(b.shift());
+                    break;
+                case 'rra':
+                    if (a.length > 1) a.unshift(a.pop());
+                    break;
+                case 'rrb':
+                    if (b.length > 1) b.unshift(b.pop());
+                    break;
+                case 'rrr':
+                    if (a.length > 1) a.unshift(a.pop());
+                    if (b.length > 1) b.unshift(b.pop());
+                    break;
+            }
+            
+            return [a, b];
+        }
+
+        function nextQuestion() {
+            currentTestCase = (currentTestCase + 1) % testCases.length;
+            displayCurrentTest();
+        }
+
+        // Initialize
+        displayCurrentTest();
+    </script>
+</body>
+</html>
