@@ -44,6 +44,8 @@ fclean: clean
 	rmdir $(OBJ_DIR)
 	rm -rf $(LIBFT_DIR)
 
-re: fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
 .PHONY: all, clean, fclean, re
