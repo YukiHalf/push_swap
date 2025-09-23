@@ -6,7 +6,7 @@
 /*   By: sdarius- <sdarius-@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 16:33:40 by sdarius-          #+#    #+#             */
-/*   Updated: 2025/09/20 16:35:46 by sdarius-         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:09:02 by sdarius-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ void	s_inser_sort(t_stack *stack_a, t_stack *stack_b, int len)
 {
 	int	min_index;
 	int	iter;
-	int	len_b;
+	int	n;
 
 	iter = 0;
-	len_b = len;
-	while (iter++ < len_b - 3)
+	n = len;
+	while (iter++ < n - 3)
 	{
 		min_index = get_min_index(stack_a);
-		if (count_rot(stack_a->head, min_index) <= len_b - min_index
+		if (count_rot(stack_a->head, min_index) <= n - min_index
 			- count_rot(stack_a->head, min_index))
 			while (stack_a->head->index != min_index)
 				rotate(stack_a, 'a', true);
@@ -83,7 +83,7 @@ void	s_inser_sort(t_stack *stack_a, t_stack *stack_b, int len)
 	}
 	simple_sort(stack_a, len);
 	iter = 0;
-	while (iter++ < len_b - 3)
+	while (iter++ < n - 3)
 		push(stack_a, stack_b, 'a', true);
 }
 

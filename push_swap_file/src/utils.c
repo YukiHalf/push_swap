@@ -6,7 +6,7 @@
 /*   By: sdarius- <sdarius-@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 18:48:11 by sdarius-          #+#    #+#             */
-/*   Updated: 2025/09/20 16:19:53 by sdarius-         ###   ########.fr       */
+/*   Updated: 2025/09/23 17:00:59 by sdarius-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	is_sorted(t_stack *stack)
 	tmp = stack->head;
 	while (tmp->next)
 	{
-		if (tmp->next > tmp->next->next)
+		if (tmp->value > tmp->next->value)
 			return (0);
 		tmp = tmp->next;
 	}
