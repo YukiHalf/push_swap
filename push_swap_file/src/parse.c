@@ -6,7 +6,7 @@
 /*   By: sdarius- <sdarius-@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/13 17:44:01 by sdarius-          #+#    #+#             */
-/*   Updated: 2025/09/20 16:34:35 by sdarius-         ###   ########.fr       */
+/*   Updated: 2025/09/23 19:33:20 by sdarius-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,10 @@ int	*get_numbers(int argc, char **argv, int count)
 	{
 		s_numbers = ft_split(argv[i], ' ');
 		if (!s_numbers)
+		{
+			free(numbers);
 			display_error("", 1);
+		}
 		check_range(s_numbers, numbers);
 		k = 0;
 		while (s_numbers[k])
